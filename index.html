@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<title>Desk</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head><body>
+<header class="nav" id="nav">
+  <button class="avatar" id="avatar" aria-label="Account">D</button>
+  <button class="who" id="who">Grok Bot ›</button>
+  <label class="search"><input id="q" type="search" placeholder="Name, symbol or mint" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+  <button class="bell" id="bell" aria-label="Activity"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/></svg><span id="dot" class="dot" hidden></span></button>
+</header>
+<div id="err" class="err" hidden></div>
+<div id="results" class="results" hidden></div>
+
+<main id="v-home" class="view">
+  <section class="bal">
+    <div class="row"><span id="balance" class="big sk">$00.00</span><span id="badge" class="pill paper" hidden>PAPER</span></div>
+    <div class="row sub"><span id="sub" class="sk">+0.00% today</span><span id="mult" class="pill mult" hidden></span></div>
+  </section>
+  <section class="chartbox"><canvas id="chart" class="chart sk"></canvas><div class="ranges" id="ranges"></div></section>
+  <section class="live" id="live">
+    <div class="screen sk" id="screen" role="button" aria-label="Open the bot's screen full size">
+      <img id="shotA" alt="" hidden><img id="shotB" alt="" hidden>
+      <div id="screenmsg" class="screenmsg" hidden></div>
+      <div class="ov tl" id="livetag"></div><div class="ov tr" id="lanetag"></div>
+    </div>
+    <div class="liveline" id="liveline">&nbsp;</div>
+  </section>
+  <section class="sec"><a class="sh" data-tab="bots"><span id="botshead">Bots</span><span class="chev">›</span></a>
+    <div class="carousel" id="carousel"><div class="bc sk"></div><div class="bc sk"></div></div></section>
+  <section class="sec"><a class="sh" data-tab="activity"><span>Activity</span><span class="see">See all</span></a>
+    <div class="card rows" id="homeact"><div class="r sk"></div><div class="r sk"></div></div></section>
+  <section id="empty" class="empty" hidden>Waiting for the first trade</section>
+  <section id="nokey" class="empty" hidden>Open this app once from the link Grok Bot sent you.</section>
+  <footer id="upd" class="upd"></footer>
+</main>
+
+<main id="v-bots" class="view" hidden>
+  <h1>Bots</h1><p class="since" id="botsince"></p>
+  <div id="botfull"><div class="card sk tall"></div><div class="card sk tall"></div><div class="card sk tall"></div></div>
+  <a class="r nav-row" id="toaudit"><span class="l">Audit<span class="s">every verdict with its 8 layers</span></span><span class="v chev">›</span></a>
+</main>
+
+<main id="v-activity" class="view" hidden>
+  <h1>Activity</h1>
+  <div class="card rows" id="actrows"><div class="r sk"></div><div class="r sk"></div></div>
+  <section id="actempty" class="empty" hidden>Nothing yet tonight</section>
+</main>
+
+<main id="v-account" class="view" hidden>
+  <h1>Account</h1>
+  <div id="acct"><div class="card sk tall"></div><div class="card sk tall"></div></div>
+</main>
+
+<main id="v-audit" class="view sub-view" hidden>
+  <button class="back" data-back>‹ Back</button><h1>Audit</h1>
+  <div id="auditrows"><div class="card sk tall"></div></div>
+  <section id="auditempty" class="empty" hidden>No audits yet tonight</section>
+</main>
+
+<main id="v-coin" class="view sub-view" hidden>
+  <button class="back" data-back>‹ Back</button>
+  <div class="coinhead"><span id="cname" class="cname sk">Coin</span><span id="cbadge" class="pill paper" hidden>PAPER</span></div>
+  <div class="csub"><span id="csub"></span><span id="cshield" class="shield" hidden></span></div>
+  <div id="cprice" class="big mid">—</div><div id="centry" class="sub"></div>
+  <canvas id="cchart" class="chart sk"></canvas>
+  <div id="cbody"><div class="card sk tall"></div></div>
+</main>
+
+<div id="full" class="full" hidden>
+  <div class="fz" id="fz"><img id="fullimg" alt=""></div>
+  <div class="fbar"><button class="fbtn" id="fclose">Done</button><a class="fbtn blue" id="ffomo" target="_blank" rel="noopener noreferrer" hidden>Open on FOMO</a></div>
+</div>
+<div id="scrim" class="scrim" hidden></div>
+<div id="sheet" class="sheet" hidden role="dialog" aria-modal="true"></div>
+<div id="toast" class="toast" hidden></div>
+
+<nav class="tabs" id="tabs">
+  <button data-tab="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</button>
+  <button data-tab="bots"><svg viewBox="0 0 24 24"><path d="M7 8h10a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3Zm4-5h2v5h-2zM9 13a1.5 1.5 0 1 0 0 .01Zm6 0a1.5 1.5 0 1 0 0 .01Z"/></svg>Bots</button>
+  <button data-tab="activity"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Activity</button>
+  <button data-tab="account"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm-8 9a8 8 0 0 1 16 0z"/></svg>Account</button>
+</nav>
+<script type="module" src="app.js"></script>
+</body></html>
